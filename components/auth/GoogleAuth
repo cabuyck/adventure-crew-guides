@@ -1,0 +1,45 @@
+import * as React from 'react';
+import { Button } from 'react-native';
+import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+
+WebBrowser.maybeCompleteAuthSession();
+
+const useProxy = false; // Change to true if you're using a proxy
+
+const GoogleSignInButton = () => {
+  const discovery = AuthSession.useAutoDiscovery('https://accounts.google.com');
+
+  // Create and load an auth request
+  const [request, response, promptAsync] = AuthSession.useAuthRequest(
+    {
+      clientId: 'YOUR_GOOGLE_CLIENT_ID',
+      scopes: ['openid', 'profile', 'email'],
+      usePKCE: false,
+      redirectUri: useProxy ? AuthSession.makeRedirectUri({
+        useProxy,
+      }) : `https://auth.expo.io/@your-username/your-app-slug`,
+    },
+    discovery
+  );
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      console.log(authentication);
+      // You can use the Google Access Token to access Google APIs or authenticate the user in your backend
+    }
+  }, [response]);
+
+  return (
+    <Button
+      disabled={!request}
+      title="Login with Google"
+      onPress={() => {
+        promptAsync({ useProxy });
+      }}
+    />
+  );
+};
+
+export default GoogleSignInButton;

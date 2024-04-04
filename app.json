@@ -19,9 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
+        "package": "com.yourcompany.yourappname",
+        "versionCode": 1,
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.adventurecrewonline.guides"
     },
     "web": {
       "favicon": "./assets/favicon.png"
